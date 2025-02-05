@@ -118,3 +118,5 @@ Creates mock customer, product, order, and order items using factories.
 | Serve the project  | `php artisan serve`      |
 
 ---
+
+![ER Diagram](public/images/er.png)
