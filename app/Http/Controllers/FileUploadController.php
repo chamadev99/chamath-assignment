@@ -60,19 +60,23 @@ class FileUploadController extends Controller
      */
     public function index()
     {
-        $orders = OrderItem::with(['order.customer', 'product'])->get();
-        $pdf = Pdf::loadView('pdf.order_summary', compact('orders'))
-            ->setPaper('a4', 'landscape');
+        try {
+            $orders = OrderItem::with(['order.customer', 'product'])->get();
+            $pdf = Pdf::loadView('pdf.order_summary', compact('orders'))
+                ->setPaper('a4', 'landscape');
 
-        $fileName = "order_" . time() . '.pdf';
-        $filePath = 'pdf/' . $fileName;
+            $fileName = "order_" . time() . '.pdf';
+            $filePath = 'pdf/' . $fileName;
 
-        $storage = Storage::put($filePath, $pdf->output());
+            $storage = Storage::put($filePath, $pdf->output());
 
-        if (!$storage) {
-            return response()->json(['success' => false, 'message' => 'Report not generated,please retry', 'link' => null], 500);
+            if (!$storage) {
+                return response()->json(['success' => false, 'message' => 'Report not generated,please retry', 'link' => null], 500);
+            }
+            return response()->json(['success' => true, 'message' => 'Report Generated', 'link' => $filePath], 200);
+        } catch (\Throwable $th) {
+            throw $th;
         }
-        return response()->json(['success' => true, 'message' => 'Report Generated', 'link' => $filePath], 200);
     }
 
     /**
@@ -145,18 +149,22 @@ class FileUploadController extends Controller
     public function store(FileUploadRequest $request): JsonResponse
     {
 
-        $request->validated();
-        $file = $request->file('file');
+        try {
+            $request->validated();
+            $file = $request->file('file');
 
-        $saveFile = $file->storeAs('uploads', 'order_list.csv');
+            $saveFile = $file->storeAs('uploads', 'order_list.csv');
 
-        if (!$saveFile || !Storage::exists($saveFile)) {
-            return response()->json(['success' => false, 'message' => "File Not Upload"]);
+            if (!$saveFile || !Storage::exists($saveFile)) {
+                return response()->json(['success' => false, 'message' => "File Not Upload"]);
+            }
+
+            ProcessStoreOrderData::dispatch($saveFile);
+
+            return response()->json(['success' => true, 'message' => "File Uploaded,Start Data storing"]);
+        } catch (\Throwable $th) {
+            throw $th;
         }
-
-        ProcessStoreOrderData::dispatch($saveFile);
-
-        return response()->json(['success' => true, 'message' => "File Uploaded,Start Data storing"]);
     }
 
     /**
@@ -199,12 +207,16 @@ class FileUploadController extends Controller
      */
     public function show(FileDownloadRequest $request)
     {
-        $filePath = storage_path('app/pdf/' . $request->file);
+        try {
+            $filePath = storage_path('app/pdf/' . $request->file);
 
-        if (!File::exists($filePath)) {
-            return response()->json(['success' => false, 'message' => "File not existing"], 404);
+            if (!File::exists($filePath)) {
+                return response()->json(['success' => false, 'message' => "File not existing"], 404);
+            }
+            return response()->download($filePath);
+        } catch (\Throwable $th) {
+            throw $th;
         }
-        return response()->download($filePath);
     }
 
     /**
