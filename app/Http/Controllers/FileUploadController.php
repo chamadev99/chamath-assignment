@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\File;
  * @OA\Info(
  *      title="API Documentation",
  *      version="1.0.0",
- *      description="This is the API documentation for my assignment application.",
+ *      description="This is the API documentation for my technical assignment application.",
  *      @OA\Contact(
  *          email="chamathpk1991@gmail.com"
  *      ),
@@ -28,7 +28,6 @@ use Illuminate\Support\Facades\File;
  * )
  */
 
-
 class FileUploadController extends Controller
 {
     /**
@@ -36,20 +35,28 @@ class FileUploadController extends Controller
      *     path="/api/generate-document",
      *     summary="generate order pdf file",
      *     tags={"generate-document"},
-     *     description="generate order data pdf file and store in the app/pdf folder.",
+     *     description="Generate order data pdf file and store in to the app/pdf folder.",
      *     @OA\Response(
      *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(
-     *                 type="object",
-     *                 @OA\Property(property="id", type="integer"),
-     *                 @OA\Property(property="name", type="string"),
-     *                 @OA\Property(property="email", type="string")
-     *             )
+     *         description="Report Generated",
+     *           @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Report Generated"),
+     *             @OA\Property(property="link", type="string", example="pdf/order_1707154602.pdf")
      *         )
-     *     )
+     *     ),
+     *  @OA\Response(
+     *         response=500,
+     *         description="Report Generated failed",
+     *           @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Report not generated,please retry"),
+     *             @OA\Property(property="link", type="string", example="null")
+     *         )
+     *     ),
+     *
      * )
      */
     public function index()
@@ -83,47 +90,91 @@ class FileUploadController extends Controller
      *     summary="upload order csv data file",
      *     tags={"upload-document"},
      *     description="Upload order data and store in the database.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 required={"file"},
+     *                 @OA\Property(
+     *                     property="file",
+     *                     description="The CSV file to upload",
+     *                     type="string",
+     *                     format="binary"
+     *                 )
+     *             )
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="File Uploaded,Start Data storing",
+     *            @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="File Uploaded, Start Data storing")
+     *         )
+     *     ),
+     *    @OA\Response(
+     *         response=422,
+     *         description="Validation Error (Invalid File Format)",
      *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(
-     *                 type="object",
-     *                 @OA\Property(property="id", type="integer"),
-     *                 @OA\Property(property="name", type="string"),
-     *                 @OA\Property(property="email", type="string")
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="The file must be a CSV."),
+     *             @OA\Property(property="errors", type="array",
+     *                 @OA\Items(
+     *                     type="string",
+     *                     example="The file field is required."
+     *                 )
      *             )
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=500,
+     *         description="File Upload Failed",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="File Not Upload")
      *         )
      *     )
      * )
      */
 
     public function store(FileUploadRequest $request): JsonResponse
-    { {
+    {
 
-            $request->validated();
-            $file = $request->file('file');
+        $request->validated();
+        $file = $request->file('file');
 
-            $saveFile = $file->storeAs('uploads', 'order_list.csv');
+        $saveFile = $file->storeAs('uploads', 'order_list.csv');
 
-            if (!$saveFile || !Storage::exists($saveFile)) {
-                return response()->json(['success' => false, 'message' => "File Not Upload"]);
-            }
-
-            ProcessStoreOrderData::dispatch($saveFile);
-
-            return response()->json(['success' => true, 'message' => "File Uploaded,Start Data storing"]);
+        if (!$saveFile || !Storage::exists($saveFile)) {
+            return response()->json(['success' => false, 'message' => "File Not Upload"]);
         }
+
+        ProcessStoreOrderData::dispatch($saveFile);
+
+        return response()->json(['success' => true, 'message' => "File Uploaded,Start Data storing"]);
     }
 
     /**
      * @OA\Get(
-     *     path="/api/download-document",
-     *     summary="download order pdf file",
+     *     path="/api/download-document/{file_name.exertion}",
+     *     summary="Download order data pdf file",
      *     tags={"download-document"},
      *     description="download order data pdf file from the app/pdf folder.",
-     *     @OA\Response(
+     *
+     *    @OA\Parameter(
+     *         name="file_name.exertion",
+     *         in="path",
+     *         required=true,
+     *         description="The name of the file  (e.g., order_1707154602.pdf)",
+     *         @OA\Schema(type="string", example="order_1707154602.pdf")
+     *     ),
+     *      @OA\Response(
      *         response=200,
      *         description="Successful operation",
      *         @OA\JsonContent(

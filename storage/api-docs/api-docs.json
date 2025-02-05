@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "API Documentation",
-        "description": "This is the API documentation for my assignment application.",
+        "description": "This is the API documentation for my technical assignment application.",
         "contact": {
             "email": "chamathpk1991@gmail.com"
         },
@@ -19,29 +19,53 @@
                     "generate-document"
                 ],
                 "summary": "generate order pdf file",
-                "description": "generate order data pdf file and store in the app/pdf folder.",
+                "description": "Generate order data pdf file and store in to the app/pdf folder.",
                 "operationId": "d4ef889b33fa0520ed84635ac68ba790",
                 "responses": {
                     "200": {
-                        "description": "Successful operation",
+                        "description": "Report Generated",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer"
-                                            },
-                                            "name": {
-                                                "type": "string"
-                                            },
-                                            "email": {
-                                                "type": "string"
-                                            }
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
                                         },
-                                        "type": "object"
-                                    }
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Report Generated"
+                                        },
+                                        "link": {
+                                            "type": "string",
+                                            "example": "pdf/order_1707154602.pdf"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Report Generated failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Report not generated,please retry"
+                                        },
+                                        "link": {
+                                            "type": "string",
+                                            "example": "null"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -57,27 +81,90 @@
                 "summary": "upload order csv data file",
                 "description": "Upload order data and store in the database.",
                 "operationId": "e5971a073f80d2cfd7ed35177539f556",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "description": "The CSV file to upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "Successful operation",
+                        "description": "File Uploaded,Start Data storing",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer"
-                                            },
-                                            "name": {
-                                                "type": "string"
-                                            },
-                                            "email": {
-                                                "type": "string"
-                                            }
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
                                         },
-                                        "type": "object"
-                                    }
+                                        "message": {
+                                            "type": "string",
+                                            "example": "File Uploaded, Start Data storing"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error (Invalid File Format)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The file must be a CSV."
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "example": "The file field is required."
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "File Upload Failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "File Not Upload"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -85,14 +172,26 @@
                 }
             }
         },
-        "/api/download-document": {
+        "/api/download-document/{file_name.exertion}": {
             "get": {
                 "tags": [
                     "download-document"
                 ],
-                "summary": "download order pdf file",
+                "summary": "Download order data pdf file",
                 "description": "download order data pdf file from the app/pdf folder.",
-                "operationId": "b746611f67e9aac4ddf20ea31c69b9b0",
+                "operationId": "302530e704b2e77917a166c053661bbe",
+                "parameters": [
+                    {
+                        "name": "file_name.exertion",
+                        "in": "path",
+                        "description": "The name of the file  (e.g., order_1707154602.pdf)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "order_1707154602.pdf"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation",
