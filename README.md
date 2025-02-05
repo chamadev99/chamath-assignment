@@ -124,5 +124,5 @@ Creates mock customer, product, order, and order items using factories.
 ## **Postman API Collection**
 
 ```sh
-chamath assignment api collection.postman_collection.json
+../chamath_assignment_api_collection.postman_collection.json
 ```
