@@ -1,0 +1,91 @@
+{
+	"info": {
+		"_postman_id": "aac6d2d6-2001-4392-bc1b-4171d6919dd3",
+		"name": "chamath assignment api collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39796480",
+		"_collection_link": "https://kdc-labs.postman.co/workspace/Tkt-System~fa61b613-c0c4-4b46-93b5-1b78c40bdacd/collection/39796480-aac6d2d6-2001-4392-bc1b-4171d6919dd3?action=share&source=collection_link&creator=39796480"
+	},
+	"item": [
+		{
+			"name": "upload-document",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/TFXI/Downloads/orders_data.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://chamath-assignment.test/api/upload-document",
+					"protocol": "http",
+					"host": [
+						"chamath-assignment",
+						"test"
+					],
+					"path": [
+						"api",
+						"upload-document"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "generate-document",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://chamath-assignment.test/api/generate-document",
+					"protocol": "http",
+					"host": [
+						"chamath-assignment",
+						"test"
+					],
+					"path": [
+						"api",
+						"generate-document"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "download-document/{pdf_name}",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"value": "order_1738740105.pdf",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://chamath-assignment.test/api/download-document",
+					"protocol": "http",
+					"host": [
+						"chamath-assignment",
+						"test"
+					],
+					"path": [
+						"api",
+						"download-document"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FileUploadRequest;
+use App\Http\Requests\FileDownloadRequest;
 use App\Jobs\ProcessStoreOrderData;
-use App\Models\Customer;
-use App\Models\Order;
 use App\Models\OrderItem;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
@@ -161,18 +160,27 @@ class FileUploadController extends Controller
     }
 
     /**
-     * @OA\Get(
-     *     path="/api/download-document/{file_name.exertion}",
+     * @OA\Post(
+     *     path="/api/download-document",
      *     summary="Download order data pdf file",
      *     tags={"download-document"},
      *     description="download order data pdf file from the app/pdf folder.",
      *
-     *    @OA\Parameter(
-     *         name="file_name.exertion",
-     *         in="path",
+     *       @OA\RequestBody(
      *         required=true,
-     *         description="The name of the file  (e.g., order_1707154602.pdf)",
-     *         @OA\Schema(type="string", example="order_1707154602.pdf")
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 required={"file"},
+     *                 @OA\Property(
+     *                     property="file",
+     *                     description="The file name",
+     *                     type="string",
+     *                     format="binary"
+     *                 )
+     *             )
+     *         )
      *     ),
      *      @OA\Response(
      *         response=200,
@@ -189,9 +197,9 @@ class FileUploadController extends Controller
      *     )
      * )
      */
-    public function show(string $file)
+    public function show(FileDownloadRequest $request)
     {
-        $filePath = storage_path('app/pdf/' . $file);
+        $filePath = storage_path('app/pdf/' . $request->file);
 
         if (!File::exists($filePath)) {
             return response()->json(['success' => false, 'message' => "File not existing"], 404);

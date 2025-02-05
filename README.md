@@ -120,3 +120,9 @@ Creates mock customer, product, order, and order items using factories.
 ---
 
 ![ER Diagram](public/images/er.PNG)
+
+## **Postman API Collection**
+
+```sh
+chamath assignment api collection.postman_collection.json
+```

@@ -21,6 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 //Route::get('')
-Route::post('/upload-document',[FileUploadController::class,'store'])->name('upload-document');
+Route::post('/upload-document', [FileUploadController::class, 'store'])->name('upload-document');
 Route::get('/generate-document', [FileUploadController::class, 'index'])->name('generate-document');
-Route::get('/download-document/{document}', [FileUploadController::class, 'show'])->name('download-document');
+Route::post('/download-document', [FileUploadController::class, 'show'])->name('download-document');

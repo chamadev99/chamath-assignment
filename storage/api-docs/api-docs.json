@@ -172,26 +172,34 @@
                 }
             }
         },
-        "/api/download-document/{file_name.exertion}": {
-            "get": {
+        "/api/download-document": {
+            "post": {
                 "tags": [
                     "download-document"
                 ],
                 "summary": "Download order data pdf file",
                 "description": "download order data pdf file from the app/pdf folder.",
-                "operationId": "302530e704b2e77917a166c053661bbe",
-                "parameters": [
-                    {
-                        "name": "file_name.exertion",
-                        "in": "path",
-                        "description": "The name of the file  (e.g., order_1707154602.pdf)",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "order_1707154602.pdf"
+                "operationId": "9ea57523cc31365b33dda05533f9454c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "description": "The file name",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Successful operation",
