@@ -74,7 +74,11 @@ route /api/documentation
 
 ## ** Api Endpoints**
 
--http://chamath-assignment.test/api/upload-document -http://chamath-assignment.test/api/generate-document -http://chamath-assignment.test/api/download-document/{pdf_name.extention}
+```sh
+-http://chamath-assignment.test/api/upload-document
+-http://chamath-assignment.test/api/generate-document
+-http://chamath-assignment.test/api/download-document/{pdf_name.extention}
+```
 
 ---
 
