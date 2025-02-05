@@ -4,14 +4,14 @@
 
 Follow these steps to set up and run the project.
 
-### ** Clone the Repository**
+### Clone the Repository
 
 ```sh
 git clone https://github.com/chamadev99/chamath-assignment.git
 cd your-repository
 ```
 
-### ** Install Dependencies**
+### Install Dependencies
 
 Run the following command to install required dependencies:
 
@@ -19,7 +19,7 @@ Run the following command to install required dependencies:
 composer install
 ```
 
-### ** Configure the Environment**
+### Configure the Environment
 
 Copy the `.env.example` file to `.env` and update your database credentials:
 
@@ -33,7 +33,7 @@ Then generate the application key:
 php artisan key:generate
 ```
 
-### ** Run Migrations**
+### Run Migrations
 
 Run the database migrations to create the necessary tables:
 
@@ -41,7 +41,7 @@ Run the database migrations to create the necessary tables:
 php artisan migrate
 ```
 
-### ** Start Queue Worker**
+### Start Queue Worker
 
 If your project uses jobs and queues, start the queue worker:
 
@@ -49,7 +49,7 @@ If your project uses jobs and queues, start the queue worker:
 php artisan queue:work
 ```
 
-### ** Run the Application**
+### Run the Application
 
 Start the development server:
 
@@ -72,7 +72,7 @@ route /api/documentation
 
 ---
 
-## ** Api Endpoints**
+## Api Endpoints
 
 ```sh
 -http://chamath-assignment.test/api/upload-document
@@ -82,7 +82,7 @@ route /api/documentation
 
 ---
 
-## ** Running Tests**
+## Running Tests
 
 To run the test cases, use the following command:
 
@@ -90,7 +90,7 @@ To run the test cases, use the following command:
 php artisan test
 ```
 
-### **Test Cases**
+### Test Cases
 
 #### ** `test_upload_validation()`**
 
@@ -108,7 +108,7 @@ Creates mock customer, product, order, and order items using factories.
 
 ---
 
-## ** Useful Commands**
+## **Useful Commands**
 
 | Task               | Command                  |
 | ------------------ | ------------------------ |
