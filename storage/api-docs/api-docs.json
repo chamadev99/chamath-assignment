@@ -1,0 +1,139 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Documentation",
+        "description": "This is the API documentation for my assignment application.",
+        "contact": {
+            "email": "chamathpk1991@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/generate-document": {
+            "get": {
+                "tags": [
+                    "generate-document"
+                ],
+                "summary": "generate order pdf file",
+                "description": "generate order data pdf file and store in the app/pdf folder.",
+                "operationId": "d4ef889b33fa0520ed84635ac68ba790",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/upload-document": {
+            "post": {
+                "tags": [
+                    "upload-document"
+                ],
+                "summary": "upload order csv data file",
+                "description": "Upload order data and store in the database.",
+                "operationId": "e5971a073f80d2cfd7ed35177539f556",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/download-document": {
+            "get": {
+                "tags": [
+                    "download-document"
+                ],
+                "summary": "download order pdf file",
+                "description": "download order data pdf file from the app/pdf folder.",
+                "operationId": "b746611f67e9aac4ddf20ea31c69b9b0",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "generate-document",
+            "description": "generate-document"
+        },
+        {
+            "name": "upload-document",
+            "description": "upload-document"
+        },
+        {
+            "name": "download-document",
+            "description": "download-document"
+        }
+    ]
+}
