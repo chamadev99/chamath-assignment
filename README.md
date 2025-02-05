@@ -119,4 +119,4 @@ Creates mock customer, product, order, and order items using factories.
 
 ---
 
-![ER Diagram](public/images/er.png)
+![ER Diagram](public/images/er.PNG)
