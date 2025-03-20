@@ -60,6 +60,7 @@ class Handler extends ExceptionHandler
      */
     private function handleApiException(Throwable $exception): JsonResponse
     {
+        dd($exception);
         if ($exception instanceof QueryException) {
             return response()->json([
                 'success' => false,

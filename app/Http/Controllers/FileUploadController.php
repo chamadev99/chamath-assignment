@@ -154,10 +154,13 @@ class FileUploadController extends Controller
             $file = $request->file('file');
 
             $saveFile = $file->storeAs('uploads', 'order_list.csv');
+            // dd($saveFile);
 
-            if (!$saveFile || !Storage::exists($saveFile)) {
-                return response()->json(['success' => false, 'message' => "File Not Upload"]);
+            if ($saveFile || !Storage::exists($saveFile)) {
+                // dd("file");
+                return response()->json(['success' => false, 'message' => "File Not Upload"]),500;
             }
+            dd("end");
 
             ProcessStoreOrderData::dispatch($saveFile);
 
